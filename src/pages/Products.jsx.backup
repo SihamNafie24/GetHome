@@ -1,0 +1,355 @@
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { ShoppingCartIcon, MagnifyingGlassIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+
+// Mock data for products with real names and Pexels images
+const mockProducts = [
+  // Kitchen Tools
+  {
+    id: 1,
+    name: 'Professional Chef Knife Set',
+    price: 299.99,
+    category: 'Kitchen Tools',
+    image: 'https://images.pexels.com/photos/16443132/pexels-photo-16443132/free-photo-of-sternsteiger-set-of-7-in-vg-10-steel.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'High-quality stainless steel chef knives for professional cooking.',
+  },
+  {
+    id: 2,
+    name: 'Smart Digital Kitchen Scale',
+    price: 49.99,
+    category: 'Kitchen Tools',
+    image: 'https://media.istockphoto.com/id/506195136/photo/portable-induction-cooktop.jpg?s=612x612&w=0&k=20&c=NQN0nWflv1_OJfRpRoARKc76_-2iDAUaRVknduAiBfY=',
+    description: 'Precise digital scale with smart features for perfect measurements.',
+  },
+  {
+    id: 3,
+    name: 'Premium Cast Iron Skillet',
+    price: 89.99,
+    category: 'Kitchen Tools',
+    image: 'https://images.pexels.com/photos/5639249/pexels-photo-5639249.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    description: 'Durable cast iron skillet for perfect searing and even cooking.',
+  },
+  // Home Appliances
+  {
+    id: 4,
+    name: 'Smart Refrigerator',
+    price: 1299.99,
+    category: 'Home Appliances',
+    image: 'https://media.istockphoto.com/id/1468024980/photo/cleaner-looking-at-the-shopping-list-on-the-fridge-at-an-automated-house.jpg?s=612x612&w=0&k=20&c=Y9p5P7h3KcczlYOsa2JO3kDhWUoirWK3VXwOQqZmnVA=',
+    description: 'Modern refrigerator with smart features and ample storage.',
+  },
+  {
+    id: 5,
+    name: 'Professional Blender',
+    price: 199.99,
+    category: 'Home Appliances',
+    image: 'https://images.pexels.com/photos/7936982/pexels-photo-7936982.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'High-powered blender for smoothies and food processing.',
+  },
+  {
+    id: 6,
+    name: 'Smart Dishwasher',
+    price: 899.99,
+    category: 'Home Appliances',
+    image: 'https://images.pexels.com/photos/3829560/pexels-photo-3829560.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'Energy-efficient dishwasher with smart features.',
+  },
+  // Storage Solutions
+  {
+    id: 7,
+    name: 'Modular Kitchen Storage Set',
+    price: 149.99,
+    category: 'Storage Solutions',
+    image: 'https://images.pexels.com/photos/6489104/pexels-photo-6489104.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'Versatile storage solution for kitchen organization.',
+  },
+  {
+    id: 9,
+    name: 'Under-Sink Storage Unit',
+    price: 79.99,
+    category: 'Storage Solutions',
+    image: 'https://media.istockphoto.com/id/1267081481/photo/modern-design-bathroom-sink-with-mirror-in-a-modern-residential-building-or-hotel.jpg?s=612x612&w=0&k=20&c=1FDPm3q6jX9lN7LwNK8BbIZnMWr-lkpc93VkMe6X-rE=',
+    description: 'Space-saving storage solution for under-sink organization.',
+  },
+  // Smart Home
+  {
+    id: 10,
+    name: 'Smart Home Hub',
+    price: 199.99,
+    category: 'Smart Home',
+    image: 'https://images.pexels.com/photos/28940512/pexels-photo-28940512/free-photo-of-smart-home-devices-bulbs-cameras-hubs.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'Central control hub for your smart home devices.',
+  },
+  {
+    id: 11,
+    name: 'Smart Lighting System',
+    price: 149.99,
+    category: 'Smart Home',
+    image: 'https://media.istockphoto.com/id/1345541604/photo/woman-controlling-the-lights-of-her-house-using-a-home-automation-system.jpg?s=612x612&w=0&k=20&c=OUJ6GbXbj2x372roEym9tcuty0cr3IGJM14JQCGXD20=',
+    description: 'Automated lighting system with voice control.',
+  },
+  {
+    id: 12,
+    name: 'Smart Security Camera',
+    price: 129.99,
+    category: 'Smart Home',
+    image: 'https://images.pexels.com/photos/16423102/pexels-photo-16423102/free-photo-of-home-security-camera.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description: 'HD security camera with motion detection.',
+  },
+];
+
+// Generate more products by duplicating and modifying existing ones
+const generateMoreProducts = () => {
+  const additionalProducts = [];
+  const uniqueImages = [
+    // Kitchen Tools Images
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/6214477/pexels-photo-6214477.jpeg?auto=compress&cs=tinysrgb&w=600',
+    // Home Appliances Images
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    // Storage Solutions Images
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=600',
+    // Smart Home Images
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/29262961/pexels-photo-29262961/free-photo-of-modern-minimalist-kitchen-with-sleek-design.jpeg?auto=compress&cs=tinysrgb&w=600',
+  ];
+
+  for (let i = 13; i <= 100; i++) {
+    const baseProduct = mockProducts[(i - 1) % mockProducts.length];
+    const imageIndex = (i - 13) % uniqueImages.length;
+    additionalProducts.push({
+      ...baseProduct,
+      id: i,
+      name: `${baseProduct.name} ${Math.floor(i / mockProducts.length) + 1}`,
+      price: baseProduct.price + Math.floor(Math.random() * 50),
+      image: uniqueImages[imageIndex],
+    });
+  }
+  return [...mockProducts, ...additionalProducts];
+};
+
+const allProducts = generateMoreProducts();
+
+export default function Products() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [products, setProducts] = useState(allProducts);
+  const [filters, setFilters] = useState({
+    category: searchParams.get('category') || 'all',
+    priceRange: 'all',
+    sortBy: 'featured',
+  });
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    let filteredProducts = [...allProducts];
+
+    // Apply category filter
+    if (filters.category !== 'all') {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category.toLowerCase().replace(' ', '-') === filters.category
+      );
+    }
+
+    // Apply price range filter
+    if (filters.priceRange !== 'all') {
+      const [min, max] = filters.priceRange.split('-').map(Number);
+      filteredProducts = filteredProducts.filter(
+        (product) => product.price >= min && product.price <= max
+      );
+    }
+
+    // Apply sorting
+    switch (filters.sortBy) {
+      case 'price-low-high':
+        filteredProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high-low':
+        filteredProducts.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-asc':
+        filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    setProducts(filteredProducts);
+  }, [filters]);
+
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    if (key === 'category') {
+      setSearchParams({ category: value });
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Filters Sidebar */}
+        <div className="w-full md:w-64 space-y-6">
+          <div>
+            <h3 className="text-lg font-medium text-gray-900">Categories</h3>
+            <div className="mt-2 space-y-2">
+              <button
+                onClick={() => handleFilterChange('category', 'all')}
+                className={`block w-full text-left px-3 py-2 rounded-md ${
+                  filters.category === 'all'
+                    ? 'bg-primary-100 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                All Categories
+              </button>
+              {['Kitchen Tools', 'Home Appliances', 'Storage Solutions', 'Smart Home'].map(
+                (category) => (
+                  <button
+                    key={category}
+                    onClick={() =>
+                      handleFilterChange('category', category.toLowerCase().replace(' ', '-'))
+                    }
+                    className={`block w-full text-left px-3 py-2 rounded-md ${
+                      filters.category === category.toLowerCase().replace(' ', '-')
+                        ? 'bg-primary-100 text-primary-700'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium text-gray-900">Price Range</h3>
+            <div className="mt-2 space-y-2">
+              {[
+                { label: 'All Prices', value: 'all' },
+                { label: 'Under $100', value: '0-100' },
+                { label: '$100 - $300', value: '100-300' },
+                { label: '$300 - $500', value: '300-500' },
+                { label: 'Over $500', value: '500-1000' },
+              ].map((range) => (
+                <button
+                  key={range.value}
+                  onClick={() => handleFilterChange('priceRange', range.value)}
+                  className={`block w-full text-left px-3 py-2 rounded-md ${
+                    filters.priceRange === range.value
+                      ? 'bg-primary-100 text-primary-700'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {range.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {products.length} Products
+            </h2>
+            <select
+              value={filters.sortBy}
+              onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+              className="block w-48 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white text-gray-900"
+            >
+              <option value="featured">Featured</option>
+              <option value="price-low-high">Price: Low to High</option>
+              <option value="price-high-low">Price: High to Low</option>
+              <option value="name-asc">Name: A to Z</option>
+              <option value="name-desc">Name: Z to A</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 0px 20px rgba(59, 130, 246, 0.6)",
+                }}
+                transition={{ duration: 0.2 }}
+                className="group relative bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 cursor-pointer flex flex-col"
+              >
+                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-white p-4">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain object-center group-hover:opacity-95 transition-opacity duration-300"
+                  />
+                </div>
+
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-base font-semibold leading-tight text-gray-900">
+                    <Link to={`/products/${product.id}`} className="focus:outline-none">
+                      <span aria-hidden="true" className="absolute inset-0" />
+                      {product.name}
+                    </Link>
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-700 flex-grow">{product.category}</p>
+                  <p className="mt-2 text-lg font-bold text-gray-900">
+                    ${product.price.toFixed(2)}
+                  </p>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-300"
+                  >
+                    <ShoppingCartIcon className="h-5 w-5 mr-2" />
+                    Add to Cart
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+} 

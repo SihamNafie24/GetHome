@@ -11,16 +11,16 @@ GetHome is a modern, full-featured e-commerce platform built with React and Vite
 
 ## ✨ Features
 
-- 🛍️ **Product Catalog** - Browse 100+ products with advanced filtering
-- 🔍 **Smart Search** - Real-time search functionality
-- 🛒 **Shopping Cart** - Full cart management with quantity controls
-- ❤️ **Wishlist** - Save favorite products
-- ⭐ **Product Ratings** - Customer reviews and ratings
-- 📱 **Responsive Design** - Mobile-first, works on all devices
-- 🎨 **Modern UI** - Clean design with smooth animations
-- 🏷️ **Category Filters** - Filter by category and price range
-- 📦 **Stock Management** - Real-time stock availability
-- 🎯 **Advanced Sorting** - Sort by price, name, and ratings
+-  **Product Catalog** - Browse 100+ products with advanced filtering
+-  **Smart Search** - Real-time search functionality
+-  **Shopping Cart** - Full cart management with quantity controls
+-  **Wishlist** - Save favorite products
+-  **Product Ratings** - Customer reviews and ratings
+-  **Responsive Design** - Mobile-first, works on all devices
+-  **Modern UI** - Clean design with smooth animations
+-  **Category Filters** - Filter by category and price range
+-  **Stock Management** - Real-time stock availability
+-  **Advanced Sorting** - Sort by price, name, and ratings
 
 ##  Tech Stack
 

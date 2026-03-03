@@ -5,7 +5,7 @@
 **Location:** EL-Jadida hay salam, Morocco  
 **Phone:** +212 643 552164
 
-## 🏠 About GetHome
+##  About GetHome
 
 GetHome is a modern, full-featured e-commerce platform built with React and Vite. It offers a seamless shopping experience for home products, kitchen tools, and smart home devices.
 
@@ -22,7 +22,7 @@ GetHome is a modern, full-featured e-commerce platform built with React and Vite
 - 📦 **Stock Management** - Real-time stock availability
 - 🎯 **Advanced Sorting** - Sort by price, name, and ratings
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 - **Frontend:** React 18
 - **Build Tool:** Vite
@@ -33,7 +33,7 @@ GetHome is a modern, full-featured e-commerce platform built with React and Vite
 - **Notifications:** React Hot Toast
 - **State Management:** React Context API
 
-## 📦 Installation
+##  Installation
 
 1. Clone the repository:
 ```bash
@@ -53,7 +53,7 @@ npm run dev
 
 4. Open your browser and visit `http://localhost:5173`
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```
 GetHome/
@@ -80,14 +80,14 @@ GetHome/
 └── README.md
 ```
 
-## 📄 Available Scripts
+##  Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
-## 🎨 Key Pages
+##  Key Pages
 
 ### Home
 - Hero section with featured products
@@ -114,7 +114,7 @@ GetHome/
 - Location details
 - FAQ section
 
-## 🌟 Features in Detail
+##  Features in Detail
 
 ### Product Management
 - Dynamic product generation
@@ -137,20 +137,20 @@ GetHome/
 - Mobile-responsive layout
 - Intuitive navigation
 
-## 📞 Contact Information
+##  Contact Information
 
 - **Email:** sihamnafie2000@gmail.com
 - **Phone:** +212 643 552164
 - **Address:** EL-Jadida hay salam, Morocco
 
-## 📝 License
+##  License
 
 This project is open source and available under the MIT License.
 
-## 👨‍💻 Developer
+##  Developer
 
 Developed by **SihamNafie24**
 
 ---
 
-⭐ Star this repository if you find it helpful!
+ Star this repository if you find it helpful!

@@ -1,15 +1,12 @@
 # GetHome - Modern E-Commerce Platform
 
 **Author:** SihamNafie24  
-**Contact:** sihamnafie2000@gmail.com  
-**Location:** EL-Jadida hay salam, Morocco  
-**Phone:** +212 643 552164
 
 ##  About GetHome
 
 GetHome is a modern, full-featured e-commerce platform built with React and Vite. It offers a seamless shopping experience for home products, kitchen tools, and smart home devices.
 
-## ✨ Features
+##  Features
 
 -  **Product Catalog** - Browse 100+ products with advanced filtering
 -  **Smart Search** - Real-time search functionality
